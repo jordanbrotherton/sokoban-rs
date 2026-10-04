@@ -6,12 +6,12 @@ use std::io::{self, Write};
 
 fn main() {
     let mut grid = Grid::new(String::from(
-        "##########\n# @       ##\n#  # $   $  #\n#  . .     #\n###########",
+        "##########\n# @       ##\n#  # $   $  #\n#  ..      #\n###########",
     ));
     let mut undo_grid = grid.clone();
     grid.print_grid();
     loop {
-        if (grid.goal_count == 0) {
+        if grid.goal_count == 0 {
             println!("Level complete!");
             break;
         }
