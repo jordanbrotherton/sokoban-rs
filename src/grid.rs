@@ -5,11 +5,13 @@ use crate::cell::{
     CellObjects::{self, Goal, Player},
 };
 
+#[derive(Clone)]
 pub struct Grid {
     width: usize,
     height: usize,
     contents: Vec<Cell>,
     pub player: Cell,
+    pub goal_count: usize,
 }
 
 impl Grid {
@@ -18,6 +20,7 @@ impl Grid {
 
         let mut player = Cell::new(0, 0, '@');
         let mut lines = xsb.lines();
+        let mut goal_count: usize = 0;
         let width: usize = lines.max_by_key(|s| s.len()).map(|s| s.len()).unwrap_or(0);
         let mut height: usize = 0;
         lines = xsb.lines();
@@ -27,6 +30,8 @@ impl Grid {
                 let cell = Cell::new(current_x, height, char);
                 if cell.object_type == CellObjects::Player {
                     player = cell;
+                } else if cell.object_type == CellObjects::Goal {
+                    goal_count += 1;
                 }
                 contents.push(cell);
                 current_x += 1;
@@ -44,6 +49,7 @@ impl Grid {
             height,
             contents,
             player,
+            goal_count,
         }
     }
 
@@ -103,6 +109,9 @@ impl Grid {
                 CellObjects::BoxOnGoal => CellObjects::Box,
                 _ => CellObjects::Floor,
             };
+            if (cell.object_type == CellObjects::Box) {
+                self.goal_count += 1;
+            }
         } else {
             if neighbor.object_type == CellObjects::Goal {
                 cell.object_type = match cell.object_type {
@@ -111,6 +120,9 @@ impl Grid {
                     _ => CellObjects::Floor,
                 };
                 neighbor.object_type = CellObjects::Floor;
+                if (cell.object_type == CellObjects::BoxOnGoal) {
+                    self.goal_count -= 1;
+                }
             } else {
                 neighbor.object_type = CellObjects::Floor;
             }
@@ -135,8 +147,8 @@ impl Grid {
         // Repeat.
         clearscreen::clear();
         println!(
-            "Width: {}\nHeight: {}\nPlayer: ({}, {})",
-            self.width, self.height, self.player.x, self.player.y
+            "Width: {}\nHeight: {}\nPlayer: ({}, {})\nGoals Left: {}",
+            self.width, self.height, self.player.x, self.player.y, self.goal_count
         );
         let mut current_y = 0;
         let mut output_line = String::new();

@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 #[derive(PartialEq, Eq, Clone, Copy)]
 pub enum CellObjects {
     Floor,
