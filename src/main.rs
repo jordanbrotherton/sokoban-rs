@@ -24,20 +24,28 @@ fn main() {
             break;
         }
         if input == "w" {
-            undo_grid = grid.clone();
-            grid.move_object(grid.player, 0, -1);
+            let undo_grid_to_be = grid.clone();
+            if grid.move_object(grid.player, 0, -1) {
+                undo_grid = undo_grid_to_be;
+            }
         }
         if input == "a" {
-            undo_grid = grid.clone();
-            grid.move_object(grid.player, -1, 0);
+            let undo_grid_to_be = grid.clone();
+            if grid.move_object(grid.player, -1, 0) {
+                undo_grid = undo_grid_to_be;
+            }
         }
         if input == "s" {
-            undo_grid = grid.clone();
-            grid.move_object(grid.player, 0, 1);
+            let undo_grid_to_be = grid.clone();
+            if grid.move_object(grid.player, 0, 1) {
+                undo_grid = undo_grid_to_be;
+            }
         }
         if input == "d" {
-            undo_grid = grid.clone();
-            grid.move_object(grid.player, 1, 0);
+            let undo_grid_to_be = grid.clone();
+            if grid.move_object(grid.player, 1, 0) {
+                undo_grid = undo_grid_to_be;
+            }
         }
         if input == "undo" {
             grid = undo_grid.clone();

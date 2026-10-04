@@ -23,9 +23,14 @@ impl Grid {
             let mut current_x = 0;
             for char in line.chars() {
                 let cell = Cell::new(current_x, height, char);
-                if cell.object_type == CellObjects::Player {
+                if cell.object_type == CellObjects::Player
+                    || cell.object_type == CellObjects::PlayerOnGoal
+                {
                     player = cell;
-                } else if cell.object_type == CellObjects::Goal {
+                }
+                if cell.object_type == CellObjects::Goal
+                    || cell.object_type == CellObjects::PlayerOnGoal
+                {
                     goal_count += 1;
                 }
                 contents.push(cell);
